@@ -1,37 +1,11 @@
-import pandas as pd
-import numpy as np
-from typing import Dict
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.linear_model import LinearRegression
-from sklearn.compose import ColumnTransformer
 from sklearn.svm import SVR
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, root_mean_squared_error
 
-df: pd.DataFrame = pd.read_csv("../data/salary_data.csv")
-df.dropna(inplace=True)
-
-X = df.drop(columns=['Salary'])
-y = df["Salary"]
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-categorical_cols = X.select_dtypes(include=["object", "string"]).columns.tolist()
-numerical_cols = X.select_dtypes(include=["int64", "float64"]).columns.tolist()
-
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', StandardScaler(), numerical_cols),
-        ('cat', OneHotEncoder(sparse_output=False, handle_unknown='ignore'), categorical_cols)
-    ],
-    remainder='passthrough'
-)
-
-def select_pipeline():
-    repeat = True
-    while repeat == True:
+def select_pipeline(preprocessor):
+    while True:
         choice = input("Would you like to use a SVR model or Linear Regression? (SVR/LR): ")
         if choice.lower() == "svr":
             pipeline = Pipeline([
@@ -43,7 +17,7 @@ def select_pipeline():
             'model__degree': [1,2,3,4],
             'model__gamma': ['scale', 'auto'],
         }]
-            repeat = False
+            return pipeline, param
         elif choice.lower() == "lr":
             pipeline = Pipeline([
             ("preprocessor", preprocessor),
@@ -52,14 +26,13 @@ def select_pipeline():
             param = [{
             'model__fit_intercept': [True, False]
         }]
-            repeat = False
+            return pipeline, param
 
         else:
             print("Invalid model choice. Please try again.")
-            repeat = True
-    return pipeline, param
+
     
-def fit_and_print(pipe):
+def fit_and_print(pipe, X_train, X_test, y_train, y_test):
         pipe.fit(X_train, y_train)
         y_pred = pipe.predict(X_test)
         mae = f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred)}"
@@ -68,29 +41,27 @@ def fit_and_print(pipe):
         rmse = f"Root Mean Squared Error: {root_mean_squared_error(y_test, y_pred)}"
         return mae, mse, r2, rmse
 
-def grid_search(pipeline, param):
+def grid_search(pipeline, param, X_train, y_train):
     clf = GridSearchCV(pipeline, param_grid=param, scoring='r2', cv=5)
     clf.fit(X_train,y_train)
     best_model = clf.best_estimator_    
     return best_model
 
-def model_pipeline():
-     pipeline, param_grid = select_pipeline()
+def model_pipeline(preprocessor, X_train, X_test, y_train, y_test):
+     pipeline, param_grid = select_pipeline(preprocessor)
     
      print("Baseline model performance:")
-     print(fit_and_print(pipeline))
+     print(fit_and_print(pipeline, X_train, X_test, y_train, y_test))
 
      userinput = input("Would you like to improve the model (y/n): ")
      if userinput.lower() == "y":
-        gs = grid_search(pipeline, param_grid)
+        gs = grid_search(pipeline, param_grid, X_train, y_train)
         print("Grid searched model performance:")
-        print(fit_and_print(gs))
-
+        print(fit_and_print(gs, X_train, X_test, y_train, y_test))
+        return gs
      elif userinput.lower() == "n":
          return pipeline
      else:
-         "Incorrect input."
-
-model_pipeline()
-
+         print("Incorrect input.")
+         return pipeline
      
