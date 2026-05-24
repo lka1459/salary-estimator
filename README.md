@@ -1,21 +1,26 @@
 # Salary Estimator
 
-A basic machine learning regression project that predicts salary values using structured data.
+A beginner-friendly machine learning regression project that predicts salary values using structured employee data.
 
-This project was built as a beginner-friendly regression model to practise the end-to-end machine learning workflow, including data loading, preprocessing, model training, evaluation, and basic hyperparameter tuning.
-
-## Project Overview
-
-The model uses a Salary Prediction dataset from Kaggle. The dataset contains employee salary-related information and is used to practise regression modelling. The target variable is `Salary`, while the remaining columns are used as input features.
+This project was created to practise the end-to-end machine learning workflow, including data loading, preprocessing, model training, evaluation, visualisation, and basic hyperparameter tuning.
 
 ## Dataset
 
 The dataset used in this project was taken from Kaggle:
 
-**Salary Prediction dataset** by Rkiattisak  
+**Salary Prediction for Beginner**  
 Source: https://www.kaggle.com/datasets/rkiattisak/salaly-prediction-for-beginer
 
-The dataset contains employee salary-related information and is used here for a beginner regression modelling project. The target variable is `Salary`.
+The target variable is `Salary`, while the remaining columns are used as input features.
+
+## Project Overview
+
+The project currently supports two regression models:
+
+- Linear Regression
+- Support Vector Regression (SVR)
+
+The user can choose which model to train. After training a baseline version, the project can optionally run GridSearchCV to tune the selected model.
 
 ## Features
 
@@ -23,15 +28,16 @@ The dataset contains employee salary-related information and is used here for a 
 - Splits data into training and testing sets
 - Automatically detects categorical and numerical columns
 - Applies preprocessing using `ColumnTransformer`
-- Scales numerical features with `StandardScaler`
-- Encodes categorical features with `OneHotEncoder`
-- Trains either Linear Regression or SVR
-- Evaluates models using:
+- Scales numerical features using `StandardScaler`
+- Encodes categorical features using `OneHotEncoder`
+- Trains Linear Regression or SVR models
+- Evaluates regression performance using:
   - Mean Absolute Error (MAE)
   - Mean Squared Error (MSE)
   - Root Mean Squared Error (RMSE)
   - R² Score
-- Allows optional hyperparameter tuning using GridSearchCV
+- Supports optional GridSearchCV tuning
+- Includes residual plot visualisation for model error analysis
 
 ## Project Structure
 
@@ -42,7 +48,8 @@ Salary Estimator/
 │   └── salary_data.csv
 │
 ├── src/
-│   └── model_pipeline.py
+│   ├── data_setup.py
+│   ├── model_pipeline.py
 │   └── model_evaluation.py
 │
 ├── main.py
