@@ -1,7 +1,7 @@
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.svm import SVR
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, root_mean_squared_error
 
 def select_pipeline(preprocessor):
@@ -16,6 +16,8 @@ def select_pipeline(preprocessor):
             'model__kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
             'model__degree': [1,2,3,4],
             'model__gamma': ['scale', 'auto'],
+            'model__C': [0.1, 1, 10, 100, 1000],
+            'model__epsilon': [0.01, 0.1, 0.5, 1]
         }]
             return pipeline, param
         elif choice.lower() == "lr":
@@ -24,7 +26,9 @@ def select_pipeline(preprocessor):
             ("model", LinearRegression())
         ])
             param = [{
-            'model__fit_intercept': [True, False]
+            'model__fit_intercept': [True, False],
+            'model__n_jobs': [1, 5, 10, 15, None],
+            'model__positive': [True, False],
         }]
             return pipeline, param
 
@@ -46,6 +50,11 @@ def grid_search(pipeline, param, X_train, y_train):
     clf.fit(X_train,y_train)
     best_model = clf.best_estimator_    
     return best_model
+
+def random_search(param, X_train, y_train):
+    lasso = Lasso()
+    random_search = RandomizedSearchCV(lasso, param, n_iter=10, cv=5)
+    random_search.fit(X_train, y_train)
 
 def model_pipeline(preprocessor, X_train, X_test, y_train, y_test):
      pipeline, param_grid = select_pipeline(preprocessor)
