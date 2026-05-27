@@ -2,7 +2,7 @@
 
 A beginner-friendly machine learning regression project that predicts salary values using structured employee data.
 
-This project was created to practise the end-to-end machine learning workflow, including data loading, preprocessing, model training, evaluation, visualisation, and basic hyperparameter tuning.
+This project was created to practise the end-to-end machine learning workflow, including data loading, preprocessing, model training, evaluation, visualisation, type hints, and basic hyperparameter tuning.
 
 ## Dataset
 
@@ -20,7 +20,9 @@ The project currently supports two regression models:
 - Linear Regression
 - Support Vector Regression (SVR)
 
-The user can choose which model to train. After training a baseline version, the project can optionally run GridSearchCV to tune the selected model.
+The user can choose which model to train from the terminal. After training a baseline model, the project can optionally run hyperparameter tuning using `RandomizedSearchCV` to improve model performance.
+
+The project is structured in a modular way, with separate files for data preparation, model training, and model evaluation.
 
 ## Features
 
@@ -31,13 +33,14 @@ The user can choose which model to train. After training a baseline version, the
 - Scales numerical features using `StandardScaler`
 - Encodes categorical features using `OneHotEncoder`
 - Trains Linear Regression or SVR models
+- Supports optional hyperparameter tuning using `RandomizedSearchCV`
 - Evaluates regression performance using:
   - Mean Absolute Error (MAE)
   - Mean Squared Error (MSE)
   - Root Mean Squared Error (RMSE)
   - R² Score
-- Supports optional GridSearchCV tuning
 - Includes residual plot visualisation for model error analysis
+- Uses Python type hints to improve code readability and maintainability
 
 ## Project Structure
 

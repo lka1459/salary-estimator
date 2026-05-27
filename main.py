@@ -1,12 +1,16 @@
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
 from src.model_pipeline import model_pipeline
 from src.model_evaluation import model_evaluation
 from src.data_setup import load_and_split_data, build_preprocessor
 
-def main():
-    X_train, X_test, y_train, y_test = load_and_split_data()
-    preprocessor = build_preprocessor(X_train)
+def main() -> None:
 
-    model = model_pipeline(
+    X_train, X_test, y_train, y_test = load_and_split_data()
+    preprocessor: ColumnTransformer = build_preprocessor(X_train)
+
+    model: Pipeline = model_pipeline(
     preprocessor,
     X_train,
     X_test,
