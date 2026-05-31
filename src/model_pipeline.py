@@ -8,8 +8,9 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, r
 
 def select_pipeline(preprocessor) -> Tuple[Pipeline, List[Dict]]:
     while True:
-        choice: str = input("Would you like to use a SVR model or Linear Regression? (SVR/LR): ")
-        if choice.lower() == "svr":
+        print("\nSelect a model: \n [1] Linear Regression \n [2] Support Vector Regression \n")
+        choice: str = input("Enter choice: ")
+        if choice == "1":
             pipeline: Pipeline = Pipeline([
             ("preprocessor", preprocessor),
             ("model", SVR())
@@ -22,7 +23,7 @@ def select_pipeline(preprocessor) -> Tuple[Pipeline, List[Dict]]:
             'model__epsilon': [0.01, 0.1, 0.5, 1]
         }]
             return pipeline, param
-        elif choice.lower() == "lr":
+        elif choice == "2":
             pipeline: Pipeline = Pipeline([
             ("preprocessor", preprocessor),
             ("model", LinearRegression())
@@ -35,17 +36,17 @@ def select_pipeline(preprocessor) -> Tuple[Pipeline, List[Dict]]:
             return pipeline, param
 
         else:
-            print("Invalid model choice. Please try again.")
+            print("\nInvalid model choice. Please try again.")
 
     
 def fit_and_print(pipe, X_train, X_test, y_train, y_test) -> str:
         pipe.fit(X_train, y_train)
         y_pred: np.array = pipe.predict(X_test)
-        mae: str = f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred)}"
-        mse: str =  f"Mean Squared Error: {mean_squared_error(y_test, y_pred)}"
+        mae: str = f"Mean Absolute Error: ${mean_absolute_error(y_test, y_pred)}"
+        mse: str =  f"Mean Squared Error: ${mean_squared_error(y_test, y_pred)}"
+        rmse: str = f"Root Mean Squared Error: ${root_mean_squared_error(y_test, y_pred)}"
         r2: str =  f"R Squared: {r2_score(y_test, y_pred)}"
-        rmse: str = f"Root Mean Squared Error: {root_mean_squared_error(y_test, y_pred)}"
-        return mae, mse, r2, rmse
+        return f"{mae} \n{mse} \n{rmse} \n{r2} \n"
 
 def random_search(pipeline, param, X_train, y_train) -> Pipeline:
     clf: RandomizedSearchCV = RandomizedSearchCV(pipeline, param, n_iter=10, cv=5)
@@ -55,15 +56,16 @@ def random_search(pipeline, param, X_train, y_train) -> Pipeline:
 
 def model_pipeline(preprocessor, X_train, X_test, y_train, y_test) -> Pipeline:
      pipeline, param_grid  = select_pipeline(preprocessor)
-    
+     
+     print("\n" + "=" * 30)
      print("Baseline model performance:")
+     print("=" * 30)
+
      print(fit_and_print(pipeline, X_train, X_test, y_train, y_test))
 
-     userinput: str = input("Would you like to improve the model (y/n): ")
+     userinput: str = input("Would you like to run hyperparameter tuning? (y/n): ")
      if userinput.lower() == "y":
         rs: Pipeline = random_search(pipeline, param_grid, X_train, y_train)
-        print("Random search model performance:")
-        print(fit_and_print(rs, X_train, X_test, y_train, y_test))
         return rs
      elif userinput.lower() == "n":
          return pipeline

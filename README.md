@@ -41,6 +41,7 @@ The project is structured in a modular way, with separate files for data prepara
   - R² Score
 - Includes residual plot visualisation for model error analysis
 - Uses Python type hints to improve code readability and maintainability
+- Clean command-line interface for selecting models and viewing results
 
 ## Project Structure
 

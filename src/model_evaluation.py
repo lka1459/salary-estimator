@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 
 def basic_model_evaluation(model, X_test, y_test) -> str:
     y_pred: np.array = model.predict(X_test)
-    mae: str = f"Mean Absolute Error: {mean_absolute_error(y_test, y_pred)}"
-    mse: str =  f"Mean Squared Error: {mean_squared_error(y_test, y_pred)}"
+    mae: str = f"Mean Absolute Error: ${mean_absolute_error(y_test, y_pred)}"
+    mse: str =  f"Mean Squared Error: ${mean_squared_error(y_test, y_pred)}"
+    rmse: str = f"Root Mean Squared Error: ${root_mean_squared_error(y_test, y_pred)}"
     r2: str =  f"R Squared: {r2_score(y_test, y_pred)}"
-    rmse: str = f"Root Mean Squared Error: {root_mean_squared_error(y_test, y_pred)}"
-    return mae, mse, r2, rmse
+
+    return f"{mae} \n{mse} \n{rmse} \n{r2} \n"
 
 def plot_residual(model, X_test, y_test) -> None:
     y_pred: np.array = model.predict(X_test)
@@ -23,18 +24,15 @@ def plot_residual(model, X_test, y_test) -> None:
     return
 
 def model_evaluation(model, X_test, y_test) -> None:
-    userInput: str = input("Would you like to run a basic evaluation again? (y/n): ")
+    print("\n" + "=" * 30)
+    print("Tuned Model Evaluation:")
+    print("=" * 30)
+    print(basic_model_evaluation(model, X_test, y_test))
+  
+    userInput: str = input("Would you like to view a visual evaluation? (y/n): ")
     if userInput.lower() == "y":
-         print(basic_model_evaluation(model, X_test, y_test))
-    elif userInput.lower() == "n":
-        pass    
-    else:
-        print("Invalid input.")
-    
-    userInput2: str = input("Would you like to run see a visual representation? (y/n): ")
-    if userInput2.lower() == "y":
          plot_residual(model, X_test, y_test)
  
-    print("Evaluation completed.")
+    print("\nEvaluation completed.")
     return
     

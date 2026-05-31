@@ -7,6 +7,9 @@ from src.data_setup import load_and_split_data, build_preprocessor
 
 def main() -> None:
 
+    print("Salary Estimator")
+    print("=" * 30)
+
     X_train, X_test, y_train, y_test = load_and_split_data()
     preprocessor: ColumnTransformer = build_preprocessor(X_train)
 
