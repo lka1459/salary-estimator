@@ -1,6 +1,6 @@
 # Salary Estimator
 
-A beginner-friendly machine learning regression project that predicts salary values using structured employee data.
+A beginner-friendly machine learning regression project that predicts salary values using structured employee data and allows users to estimate salaries from custom input.
 
 This project was created to practise the end-to-end machine learning workflow, including data loading, preprocessing, model training, evaluation, visualisation, type hints, and basic hyperparameter tuning.
 
@@ -42,6 +42,8 @@ The project is structured in a modular way, with separate files for data prepara
 - Includes residual plot visualisation for model error analysis
 - Uses Python type hints to improve code readability and maintainability
 - Clean command-line interface for selecting models and viewing results
+- Allows users to enter custom workplace details and receive a predicted salary
+- Includes input validation for numeric and text fields
 
 ## Project Structure
 
@@ -54,6 +56,7 @@ Salary Estimator/
 ├── src/
 │   ├── data_setup.py
 │   ├── model_pipeline.py
+│   ├── model_predictor.py
 │   └── model_evaluation.py
 │
 ├── main.py

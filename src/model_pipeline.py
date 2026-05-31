@@ -1,14 +1,15 @@
 import numpy as np
+import sys
 from typing import List, Dict, Tuple
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, root_mean_squared_error
 
 def select_pipeline(preprocessor) -> Tuple[Pipeline, List[Dict]]:
     while True:
-        print("\nSelect a model: \n [1] Linear Regression \n [2] Support Vector Regression \n")
+        print("\nSelect a model: \n [1] Support Vector Regression \n [2] Linear Regression \n [3] Exit \n")        
         choice: str = input("Enter choice: ")
         if choice == "1":
             pipeline: Pipeline = Pipeline([
@@ -34,7 +35,8 @@ def select_pipeline(preprocessor) -> Tuple[Pipeline, List[Dict]]:
             'model__positive': [True, False],
         }]
             return pipeline, param
-
+        elif choice == "3":
+            sys.exit()
         else:
             print("\nInvalid model choice. Please try again.")
 
